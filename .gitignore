@@ -1,0 +1,30 @@
+# Diretórios gerados
+/bin/
+/obj/
+vendor/
+
+# Arquivos de compilação
+*.exe
+*.exe~
+*.out
+*.test
+*.so
+*.a
+*.prof
+
+# Editor configurations
+*.swp
+*.swo
+*.DS_Store
+.vscode/
+.idea/
+*.log
+
+# Go modules
+go.sum
+go.mod
+
+# Outros
+*.tmp
+*.bak
+*.orig
