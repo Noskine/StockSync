@@ -6,8 +6,9 @@ import (
 )
 
 type PreInitialization struct {
-	Port string
-	Host string
+	Port         string
+	Host         string
+	ConnectStrDB string
 }
 
 var Con = new(PreInitialization)
@@ -27,7 +28,7 @@ func Connect() *sql.DB {
 }
 
 func connectDataBase() (*sql.DB, error) {
-	connStr := "user=your_username password=your_password dbname=your_database_name sslmode=disable"
+	connStr := Con.ConnectStrDB
 	db, err := sql.Open("postgres", connStr)
 
 	if err != nil {
