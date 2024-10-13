@@ -6,15 +6,12 @@ type (
 	}
 )
 
-var migrations = []Migration{
-	{
-		Up: "CREATE TABLE IF NOT EXISTS users (id uuid NOT NULL, name varchar NOT NULL );",
-	},
-}
-
 func RunMigrations(migrations []Migration) error {
+	conn := OpenConn()
+	defer conn.Close()
+
 	for _, migration := range migrations {
-		_, err := Db.Exec(migration.Up)
+		_, err := conn.Exec(migration.Up)
 		if err != nil {
 			return err
 		}
