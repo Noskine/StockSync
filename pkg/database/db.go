@@ -10,6 +10,7 @@ import (
 var Db *sql.DB
 
 func OpenConn() *sql.DB {
+
 	d, err := sql.Open("postgres", os.Getenv("StrDBConnect"))
 	if err != nil {
 		panic(err)

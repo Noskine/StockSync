@@ -5,6 +5,7 @@ import (
 
 	"github.com/Noskine/StockSync/pkg/database"
 	"github.com/joho/godotenv"
+	_ "github.com/lib/pq"
 )
 
 type PreInitialization struct {
@@ -27,7 +28,5 @@ func Migrate() {
 		Up: "CREATE TABLE IF NOT EXISTS users (id uuid NOT NULL, name varchar NOT NULL );",
 	}}
 
-	if err := database.RunMigrations(migrations); err != nil {
-		panic("---> error uploading migrations")
-	}
+	database.RunMigrations(migrations)
 }
