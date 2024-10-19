@@ -1,13 +1,15 @@
 package server
 
-import "net/http"
+import (
+	"net/http"
+
+	"github.com/Noskine/StockSync/pkg/controllers"
+)
 
 func Router() {
 	r := http.NewServeMux()
 
-	r.HandleFunc("/ola", func(w http.ResponseWriter, r *http.Request) {
-		w.Write([]byte("Olá mundo!"))
-	})
-	
+	r.Handle("GET /", &controllers.UserController{})
+
 	appStart(r)
 }
