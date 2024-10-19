@@ -1,7 +1,9 @@
 package repository
 
 import (
+	"database/sql"
 	"errors"
+	"fmt"
 
 	"github.com/Noskine/StockSync/internal/entities"
 	"github.com/Noskine/StockSync/pkg/database"
@@ -32,7 +34,7 @@ func (ur *UserRepository) FindAll() ([]entities.User, error) {
 	conn := database.OpenConn()
 	defer conn.Close()
 
-	strQuery := "SELECT * FROM public.users"
+	strQuery := "SELECT * FROM public.users;"
 
 	rows, err := conn.Query(strQuery)
 	if err != nil {
@@ -56,4 +58,37 @@ func (ur *UserRepository) FindAll() ([]entities.User, error) {
 	}
 
 	return users, nil
+}
+
+func (ur *UserRepository) FindById(id string) (entities.User, error) {
+	conn := database.OpenConn()
+	defer conn.Close()
+
+	userResponse := new(entities.User)
+
+	strQuery := "SELECT id, name FROM public.users WHERE id = $1;"
+
+	err := conn.QueryRow(strQuery, id).Scan(&userResponse.Id, &userResponse.Name)
+	if err != nil {
+		return *userResponse, err
+	}
+
+	return *userResponse, nil
+}
+
+func (ur *UserRepository) DeleteById(id string) error {
+	conn := database.OpenConn()
+	defer conn.Close()
+
+	strQuery := "DELETE FROM public.users WHERE id = $1;"
+
+	err := conn.QueryRow(strQuery, id)
+	if err != nil {
+		if err.Err() == sql.ErrNoRows {
+			return fmt.Errorf("nenhuma pessoa encontrada com o ID %s", id)
+		}
+		return err.Err()
+	}
+
+	return nil
 }
