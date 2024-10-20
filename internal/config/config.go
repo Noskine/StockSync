@@ -25,7 +25,7 @@ func init() {
 
 func Migrate() {
 	var migrations []database.Migration = []database.Migration{{
-		Up: "CREATE TABLE IF NOT EXISTS users (id uuid NOT NULL, name varchar NOT NULL );",
+		Up: "CREATE TABLE IF NOT EXISTS users (id uuid NOT NULL, name varchar NOT NULL, email varchar NOT NULL, password varchar NOT NULL);",
 	}}
 
 	database.RunMigrations(migrations)

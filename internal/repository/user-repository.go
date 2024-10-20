@@ -12,7 +12,6 @@ import (
 type (
 	UserRepository struct {
 	}
-
 )
 
 func (ur *UserRepository) Create(e entities.User) (string, error) {
@@ -21,10 +20,10 @@ func (ur *UserRepository) Create(e entities.User) (string, error) {
 
 	var id string
 
-	strQuery := "INSERT INTO users (id, name) VALUES ($1, $2) RETURNING id;"
+	strQuery := "INSERT INTO users (id, name, email, password) VALUES ($1, $2, $3, $4) RETURNING id;"
 
-	if err := conn.QueryRow(strQuery, e.Id, e.Name).Scan(&id); err != nil {
-		return "", errors.New("error creating user in database")
+	if err := conn.QueryRow(strQuery, e.Id, e.Name, e.Email, e.Password).Scan(&id); err != nil {
+		return "", err
 
 	}
 
@@ -93,4 +92,3 @@ func (ur *UserRepository) DeleteById(id string) error {
 
 	return nil
 }
-
