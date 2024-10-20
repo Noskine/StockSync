@@ -1,41 +1,84 @@
 package repository_test
 
 import (
-	"log"
+	"fmt"
 	"testing"
 
 	"github.com/Noskine/StockSync/internal/entities"
-	inmemory "github.com/Noskine/StockSync/internal/repository/in-memory"
+	"github.com/Noskine/StockSync/internal/interfaces"
+	inmemory "github.com/Noskine/StockSync/internal/repository/inMemory"
 	"github.com/google/uuid"
 )
 
-var id string
+var rep interfaces.UserRepositoryInterface
+
+const (
+	Red    = "\033[31m"
+	Green  = "\033[32m"
+	Yellow = "\033[33m"
+	Reset  = "\033[0m"
+)
 
 func TestInMemory(t *testing.T) {
-	t.Run("testing the create user function in memory", func(t *testing.T) {
-		repository := inmemory.NewInMemoryPessoaRepository()
+	rep = inmemory.NewInMemoryUserRepository()
 
-		_, err := repository.Create(entities.User{
+	var id string
+
+	t.Run("testing the create user function in memory ", func(t *testing.T) {
+		str, err := rep.Create(entities.User{
 			Id:   uuid.NewString(),
-			Name: "Enikson Sonay",
+			Name: "Enikson Sonay R. Aires",
 		})
+
 		if err != nil {
 			t.Error(err)
 		}
 
-		id = repository.NextID
+		fmt.Println(Green + str + Reset)
 
-		log.Println(repository.FindAll())
+		str, err = rep.Create(entities.User{
+			Id:   uuid.NewString(),
+			Name: "Xaio Victor Duarte",
+		})
+
+		id = str
+
+		fmt.Println(Green + str + Reset)
 	})
 
-	t.Run("testing the delete-all user function in memory", func(t *testing.T) {
-		repository := inmemory.NewInMemoryPessoaRepository()
+	t.Run(Yellow+"testing the findall user function in memory", func(t *testing.T) {
 
-		err := repository.DeleteAll()
+		users, err := rep.FindAll()
 		if err != nil {
 			t.Error(err)
 		}
 
-		log.Println(repository.FindAll())
+		str := fmt.Sprintf(Yellow+"%v"+Reset, users)
+
+		fmt.Println(str)
+	})
+
+	t.Run(Yellow+"testing the findbyid user function in memory", func(t *testing.T) {
+
+		user, err := rep.FindById(id)
+		if err != nil {
+			t.Error(err)
+		}
+
+		str := fmt.Sprintf(Green+"%v"+Reset, user)
+
+		fmt.Println(str)
+	})
+
+	t.Run(Yellow+"testing the deletebyid user function in memory", func(t *testing.T) {
+
+		user, err := rep.DeleteById(id)
+		if err != nil {
+			t.Error(err)
+		}
+
+		str := fmt.Sprintf(Red+"%v"+Reset, user)
+
+		fmt.Println(str)
 	})
 }

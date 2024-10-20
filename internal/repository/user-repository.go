@@ -12,6 +12,7 @@ import (
 type (
 	UserRepository struct {
 	}
+
 )
 
 func (ur *UserRepository) Create(e entities.User) (string, error) {
@@ -92,3 +93,4 @@ func (ur *UserRepository) DeleteById(id string) error {
 
 	return nil
 }
+
