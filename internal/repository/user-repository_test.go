@@ -36,17 +36,17 @@ func TestInMemory(t *testing.T) {
 
 		fmt.Println(Green + str + Reset)
 
-		str, err = rep.Create(entities.User{
+		strTwo, err := rep.Create(entities.User{
 			Id:   uuid.NewString(),
 			Name: "Xaio Victor Duarte",
 		})
 
-		id = str
+		id = strTwo
 
-		fmt.Println(Green + str + Reset)
+		fmt.Println(Green + strTwo + Reset)
 	})
 
-	t.Run(Yellow+"testing the findall user function in memory", func(t *testing.T) {
+	t.Run("testing the findall user function in memory", func(t *testing.T) {
 
 		users, err := rep.FindAll()
 		if err != nil {
@@ -58,7 +58,7 @@ func TestInMemory(t *testing.T) {
 		fmt.Println(str)
 	})
 
-	t.Run(Yellow+"testing the findbyid user function in memory", func(t *testing.T) {
+	t.Run("testing the findbyid user function in memory", func(t *testing.T) {
 
 		user, err := rep.FindById(id)
 		if err != nil {
@@ -70,7 +70,7 @@ func TestInMemory(t *testing.T) {
 		fmt.Println(str)
 	})
 
-	t.Run(Yellow+"testing the deletebyid user function in memory", func(t *testing.T) {
+	t.Run("testing the deletebyid user function in memory", func(t *testing.T) {
 
 		user, err := rep.DeleteById(id)
 		if err != nil {
