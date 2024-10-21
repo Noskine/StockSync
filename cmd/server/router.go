@@ -14,8 +14,7 @@ func Router() {
 		fmt.Fprint(w, "Olá mundo!")
 	})
 
-	r.HandleFunc("POST /user", controllers.CreateUserController)
-	r.HandleFunc("GET /users", controllers.GetUsersController)
-	r.HandleFunc("GET /user", controllers.GetUserController)
+	controllers.RouterUser(r)
+
 	appStart(r)
 }

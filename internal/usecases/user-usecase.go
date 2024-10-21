@@ -64,3 +64,11 @@ func (u *UseCaseUser) GetUserById(id string) (dto.OutPutServerUserDTO, error) {
 		Email: user.Email,
 	}, nil
 }
+
+func (u *UseCaseUser) DeleteUserById(id string) error {
+	if err := u.rep.DeleteById(id); err != nil {
+		return err
+	}
+
+	return nil
+}

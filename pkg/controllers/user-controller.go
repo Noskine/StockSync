@@ -9,6 +9,14 @@ import (
 	"github.com/Noskine/StockSync/pkg/dto"
 )
 
+// Rotas de comunicação com o usuário;
+func RouterUser(r *http.ServeMux) {
+	r.HandleFunc("POST /user", CreateUserController)
+	r.HandleFunc("GET /users", GetUsersController)
+	r.HandleFunc("GET /user", GetUserController)
+	r.HandleFunc("DELETE /user", DeleteUser)
+}
+
 func CreateUserController(w http.ResponseWriter, r *http.Request) {
 	var data dto.InputServerUserDTO
 
@@ -80,5 +88,16 @@ func GetUserController(w http.ResponseWriter, r *http.Request) {
 }
 
 func DeleteUser(w http.ResponseWriter, r *http.Request) {
-	
+	QueryId := r.URL.Query().Get("id")
+
+	err := usecases.NewUseCaseUser().DeleteUserById(QueryId)
+	if err != nil {
+		http.Error(w, "Internal server error", http.StatusInternalServerError)
+		return
+	}
+
+	if err := json.NewEncoder(w).Encode("Success"); err != nil {
+		http.Error(w, "Internal server error / formater", http.StatusInternalServerError)
+		return
+	}
 }
