@@ -24,7 +24,12 @@ func CreateUserController(w http.ResponseWriter, r *http.Request) {
 
 	id, err := usecases.NewUseCaseUser().CreateNewUser(data)
 	if err != nil {
-		http.Error(w, "Error creating user", http.StatusInternalServerError)
+		if err.Error() == `pq: duplicate key value violates unique constraint "users_email_key"` {
+			http.Error(w, "User already exists or email already registered", http.StatusBadRequest)
+			return
+		}
+
+		http.Error(w, "Create user Error", http.StatusInternalServerError)
 		return
 	}
 

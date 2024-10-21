@@ -17,3 +17,11 @@ func OpenConn() *sql.DB {
 	}
 	return d
 }
+
+func Migrate() {
+	var migrations []Migration = []Migration{{
+		Up: "CREATE TABLE IF NOT EXISTS users (id uuid NOT NULL, name varchar(100) NOT NULL, email varchar(255) UNIQUE NOT NULL, password varchar(100) NOT NULL, PRIMARY KEY(id));",
+	}}
+
+	RunMigrations(migrations)
+}
