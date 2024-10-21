@@ -9,6 +9,7 @@ import (
 )
 
 type UseCaseUser struct {
+	rep repository.UserRepository
 }
 
 func NewUseCaseUser() *UseCaseUser {
@@ -16,12 +17,11 @@ func NewUseCaseUser() *UseCaseUser {
 }
 
 func (u *UseCaseUser) CreateNewUser(dto dto.InputServerUserDTO) (string, error) {
-	rep := new(repository.UserRepository)
 
-	str, err := rep.Create(entities.User{
-		Id:    uuid.NewString(),
-		Name:  dto.Name,
-		Email: dto.Email,
+	str, err := u.rep.Create(entities.User{
+		Id:       uuid.NewString(),
+		Name:     dto.Name,
+		Email:    dto.Email,
 		Password: lib.HashingPasswordFunc(dto.Pass),
 	})
 
@@ -30,4 +30,24 @@ func (u *UseCaseUser) CreateNewUser(dto dto.InputServerUserDTO) (string, error) 
 	}
 
 	return str, nil
+}
+
+func (u *UseCaseUser) GetUsers() ([]dto.OutPutServerUserDTO, error) {
+	users, err := u.rep.FindAll()
+	if err != nil {
+		return nil, err
+	}
+
+	var dtos []dto.OutPutServerUserDTO
+
+	for _, user := range users {
+		var dto dto.OutPutServerUserDTO
+		dto.Email = user.Email
+		dto.Id = user.Id
+		dto.Name = user.Name
+
+		dtos = append(dtos, dto)
+	}
+
+	return dtos, err
 }

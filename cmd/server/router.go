@@ -15,6 +15,7 @@ func Router() {
 	})
 
 	r.HandleFunc("POST /user", controllers.CreateUserController)
+	r.HandleFunc("GET /users", controllers.FindAllController)
 
 	appStart(r)
 }

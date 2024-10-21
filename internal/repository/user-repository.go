@@ -34,7 +34,7 @@ func (ur *UserRepository) FindAll() ([]entities.User, error) {
 	conn := database.OpenConn()
 	defer conn.Close()
 
-	strQuery := "SELECT * FROM public.users;"
+	strQuery := "SELECT id, name, email FROM public.users;"
 
 	rows, err := conn.Query(strQuery)
 	if err != nil {
@@ -46,7 +46,7 @@ func (ur *UserRepository) FindAll() ([]entities.User, error) {
 	for rows.Next() {
 		var user entities.User
 
-		err := rows.Scan(&user.Id, &user.Name)
+		err := rows.Scan(&user.Id, &user.Name, &user.Email)
 		if err != nil {
 			return nil, err
 		}

@@ -9,7 +9,6 @@ import (
 	"github.com/Noskine/StockSync/pkg/dto"
 )
 
-
 func CreateUserController(w http.ResponseWriter, r *http.Request) {
 	var data dto.InputServerUserDTO
 
@@ -30,4 +29,21 @@ func CreateUserController(w http.ResponseWriter, r *http.Request) {
 	}
 
 	json.NewEncoder(w).Encode(id)
+}
+
+func FindAllController(w http.ResponseWriter, r *http.Request) {
+	result, err := usecases.NewUseCaseUser().GetUsers()
+	if err != nil {
+		http.Error(w, "Internal server error", http.StatusInternalServerError)
+		return
+	}
+
+	js, err := json.Marshal(result)
+	if err != nil {
+		http.Error(w, "Internal server error / formater", http.StatusInternalServerError)
+		return
+	}
+
+	w.Header().Add("Content-Type", "JSON")
+	w.Write(js)
 }
