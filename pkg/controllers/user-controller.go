@@ -42,6 +42,7 @@ func CreateUserController(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	w.Header().Add("Content-Type", "Json")
 	json.NewEncoder(w).Encode(id)
 }
 
@@ -58,7 +59,7 @@ func GetUsersController(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	w.Header().Add("Content-Type", "JSON")
+	w.Header().Add("Content-Type", "Json")
 	w.Write(js)
 }
 
@@ -83,7 +84,7 @@ func GetUserController(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	w.Header().Add("Content-Type", "JSON")
+	w.Header().Add("Content-Type", "Json")
 	w.Write(js)
 }
 
@@ -96,6 +97,7 @@ func DeleteUser(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	w.Header().Add("Content-Type", "Json")
 	if err := json.NewEncoder(w).Encode("Success"); err != nil {
 		http.Error(w, "Internal server error / formater", http.StatusInternalServerError)
 		return
