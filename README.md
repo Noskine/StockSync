@@ -2,7 +2,7 @@
 
 > Sistema de gerenciamento;
 
-![gopher](https://tenor.com/pt-BR/view/dancing-gopher-dancing-gopher-golang-gif-21954547)
+![gophre](https://raw.githubusercontent.com/egonelbre/gophers/master/.thumb/animation/2bit-sprite/demo.gif)
 
 ### Tecnologias
  - GO
