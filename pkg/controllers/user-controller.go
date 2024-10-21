@@ -24,6 +24,7 @@ func CreateUserController(w http.ResponseWriter, r *http.Request) {
 
 	id, err := usecases.NewUseCaseUser().CreateNewUser(data)
 	if err != nil {
+		// Usuário já existe;
 		if err.Error() == `pq: duplicate key value violates unique constraint "users_email_key"` {
 			http.Error(w, "User already exists or email already registered", http.StatusBadRequest)
 			return
@@ -36,7 +37,7 @@ func CreateUserController(w http.ResponseWriter, r *http.Request) {
 	json.NewEncoder(w).Encode(id)
 }
 
-func FindAllController(w http.ResponseWriter, r *http.Request) {
+func GetUsersController(w http.ResponseWriter, r *http.Request) {
 	result, err := usecases.NewUseCaseUser().GetUsers()
 	if err != nil {
 		http.Error(w, "Internal server error", http.StatusInternalServerError)
@@ -51,4 +52,33 @@ func FindAllController(w http.ResponseWriter, r *http.Request) {
 
 	w.Header().Add("Content-Type", "JSON")
 	w.Write(js)
+}
+
+func GetUserController(w http.ResponseWriter, r *http.Request) {
+	QueryId := r.URL.Query().Get("id")
+
+	result, err := usecases.NewUseCaseUser().GetUserById(QueryId)
+	if err != nil {
+		// Usuário não existe no DB;
+		if err.Error() == "sql: no rows in result set" {
+			http.Error(w, "User is not registered in the database", http.StatusBadRequest)
+			return
+		}
+		http.Error(w, "Internal server error", http.StatusInternalServerError)
+		return
+	}
+
+	js, err := json.Marshal(result)
+	if err != nil {
+
+		http.Error(w, "Internal server error / formater", http.StatusInternalServerError)
+		return
+	}
+
+	w.Header().Add("Content-Type", "JSON")
+	w.Write(js)
+}
+
+func DeleteUser(w http.ResponseWriter, r *http.Request) {
+	
 }

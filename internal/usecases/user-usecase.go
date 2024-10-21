@@ -9,6 +9,7 @@ import (
 )
 
 type UseCaseUser struct {
+	// Usando o repositorio de comunicação com o DB aqui. Para chamar nos metodos da struct;
 	rep repository.UserRepository
 }
 
@@ -50,4 +51,16 @@ func (u *UseCaseUser) GetUsers() ([]dto.OutPutServerUserDTO, error) {
 	}
 
 	return dtos, err
+}
+
+func (u *UseCaseUser) GetUserById(id string) (dto.OutPutServerUserDTO, error) {
+	user, err := u.rep.FindById(id)
+	if err != nil {
+		return dto.OutPutServerUserDTO{}, err
+	}
+	return dto.OutPutServerUserDTO{
+		Id:    user.Id,
+		Name:  user.Name,
+		Email: user.Email,
+	}, nil
 }
